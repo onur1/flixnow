@@ -31,10 +31,10 @@ jobs:
 
       - name: Install
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
         run: |
           touch .npmrc
-          echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=$PACKAGE_TOKEN" > .npmrc
           echo "@onur1:registry=https://npm.pkg.github.com" >> .npmrc
           npm install
 
