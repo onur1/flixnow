@@ -2,3 +2,4 @@ coverage
 .npmrc
 lib
 .vscode
+public/bundle.js*
