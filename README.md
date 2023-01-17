@@ -1,6 +1,6 @@
 # flixbox
 
-[![build](https://github.com/onur1/flixbox/actions/workflows/main.yml/badge.svg)](https://github.com/onur1/flixbox/actions/workflows/main.yml)
+[![build](https://github.com/onur1/flixbox/actions/workflows/build.yml/badge.svg)](https://github.com/onur1/flixbox/actions/workflows/build.yml)
 
 ## API
 
