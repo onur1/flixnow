@@ -1,6 +1,6 @@
 import express from 'express'
 import * as TE from 'fp-ts/lib/TaskEither'
-import { toRequestHandler } from 'hyper-ts/lib/Express'
+import { toRequestHandler } from 'hyper-ts/lib/express'
 import { Middleware } from 'hyper-ts/lib/Middleware'
 import { Server } from 'http'
 import cors from 'cors'
