@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "description": "",
   "main": "lib/server/server/index.js",
+  "bin": "lib/server/server/index.js",
   "scripts": {
     "start": "node lib/server/server/index.js",
     "jest": "jest --runInBand",
