@@ -10,7 +10,7 @@ import { ResponseEnded, StatusOpen } from 'hyper-ts'
 import { destroy } from './middleware/Error'
 import { themoviedb, TMDb, Movie, SearchResultSet } from '../tmdb'
 import { listen } from './Express'
-import { createFromLocation } from './Flixnow'
+import { createFromLocation } from './Flixbox'
 import { parseLocation } from './Router'
 import { Storage } from '../storage/Storage'
 import createXacheStorage from '../storage/Xache'
@@ -30,7 +30,7 @@ function printObject(o: unknown): string {
     .join(' ')
 }
 
-export const flixnow = <E = never>(
+export const flixbox = <E = never>(
   tmdb: TMDb,
   storage: Storage<CachedObject>,
   onError: (reason: unknown) => E
@@ -42,7 +42,7 @@ const main = <E = never>(
   onError: (reason: unknown) => E
 ): ((ma: TE.TaskEither<E, Options>) => TE.TaskEither<E, string>) =>
   flow(
-    TE.chain<E, Options, Server>(({ port, tmdb, storage }) => listen(flixnow(tmdb, storage, onError), port, onError)),
+    TE.chain<E, Options, Server>(({ port, tmdb, storage }) => listen(flixbox(tmdb, storage, onError), port, onError)),
     TE.map(server => `listening on ${printObject(server.address())}`)
   )
 

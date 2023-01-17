@@ -1,16 +1,16 @@
-# flixnow
+# flixbox
 
-[![build](https://github.com/onur1/flixnow/actions/workflows/main.yml/badge.svg)](https://github.com/onur1/flixnow/actions/workflows/main.yml)
+[![build](https://github.com/onur1/flixbox/actions/workflows/main.yml/badge.svg)](https://github.com/onur1/flixbox/actions/workflows/main.yml)
 
 ## API
 
 #### Requests and data formats
 
-All requests to the flixnow API are HTTP GET requests. API responses are only available in JSON format. No authentication required.
+All requests to the flixbox API are HTTP GET requests. API responses are only available in JSON format. No authentication required.
 
 #### Errors
 
-When something goes wrong, flixnow will respond with the appropriate HTTP status code and an `AppError`. This can be one of:
+When something goes wrong, flixbox will respond with the appropriate HTTP status code and an `AppError`. This can be one of:
 
 - `ValidationError`: Thrown when user input can't be validated
 - `ProviderError`: Thrown when TMDb fails to respond with valid payload

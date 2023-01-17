@@ -8,7 +8,7 @@ import { toTaskEither } from '@onur1/axios-ts/lib/TaskEither'
 import { HttpError } from '@onur1/axios-ts/lib/Error'
 import { attempt } from 'elm-ts/lib/Task'
 import { Lens } from 'monocle-ts'
-import * as flixnow from './Client'
+import * as flixbox from './Client'
 import { Msg, Navigate, PushUrl, pushUrl as pushUrlMsg, setHttpError, setMovie, setSearchResults } from './Msg'
 import {
   Model,
@@ -76,7 +76,7 @@ export function update(msg: Msg, model: Model): Effect {
         const q = O.toUndefined(msg.route.query)
         if (q) {
           return request(
-            flixnow.getSearchRequest(BASE_API_URL)(q),
+            flixbox.getSearchRequest(BASE_API_URL)(q),
             setHttpError,
             res => pipe(res.results, setSearchResults),
             routeLens.set(msg.route)(init)
@@ -84,7 +84,7 @@ export function update(msg: Msg, model: Model): Effect {
         }
       } else if (msg.route._tag === 'Movie') {
         return request(
-          flixnow.getMovieRequest(BASE_API_URL)(msg.route.id),
+          flixbox.getMovieRequest(BASE_API_URL)(msg.route.id),
           setHttpError,
           setMovie,
           routeLens.set(msg.route)(withoutSearchResults(init))

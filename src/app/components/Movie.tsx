@@ -71,7 +71,7 @@ const MovieComponent: React.FC<MovieProps> = (props: MovieProps) => {
                 ></iframe>
               ) : (
                 <div className={classes.suggest}>
-                  <Typography variant="body1">{`this video doesn't exist in flixnow database`}</Typography>
+                  <Typography variant="body1">{`this video doesn't exist in flixbox database`}</Typography>
                   <Typography variant="body2">{`but, maybe YOU can help solve this mystery`}</Typography>
                   <div>
                     <InputBase autoFocus placeholder="suggest a link..." spellCheck={false} />
@@ -85,7 +85,7 @@ const MovieComponent: React.FC<MovieProps> = (props: MovieProps) => {
             target="_blank"
             href={`//twitter.com/share?text=${encodeURIComponent(`Check this out! ${movie.title}`)}&url=${
               window.location.protocol
-            }//${window.location.host}${window.location.pathname}i&hashtags=flixnow,movies,cool`}
+            }//${window.location.host}${window.location.pathname}i&hashtags=flixbox,movies,cool`}
           >
             Share on Twitter
           </Link>

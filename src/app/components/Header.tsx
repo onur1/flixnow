@@ -76,7 +76,7 @@ const Header: React.FC<HeaderProps> = (props: HeaderProps) => {
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             <Link href={hrefs.home} onClick={onLink}>
-              flixnow
+              flixbox
             </Link>
           </Typography>
           <div className={classes.search}>

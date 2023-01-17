@@ -6,7 +6,7 @@ const config = {
   output: {
     filename: './bundle.js',
     path: __dirname + '/public',
-    library: 'flixnow',
+    library: 'flixbox',
     libraryTarget: 'window',
     libraryExport: 'default',
   },
