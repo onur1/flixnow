@@ -74,7 +74,7 @@ const MovieComponent: React.FC<MovieProps> = (props: MovieProps) => {
                   <Typography variant="body1">{`this video doesn't exist in flixnow database`}</Typography>
                   <Typography variant="body2">{`but, maybe YOU can help solve this mystery`}</Typography>
                   <div>
-                    <InputBase autoFocus placeholder="suggest a link…" spellCheck={false} />
+                    <InputBase autoFocus placeholder="suggest a link..." spellCheck={false} />
                   </div>
                 </div>
               )

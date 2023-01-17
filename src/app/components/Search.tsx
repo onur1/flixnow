@@ -48,7 +48,7 @@ const Search: React.FC<SearchProps> = (props: SearchProps) => {
       <InputBase
         autoFocus
         className={classes.input}
-        placeholder="search movies…"
+        placeholder="search movies..."
         onChange={onChange}
         value={toUndefined(term) || ''}
         spellCheck={false}
