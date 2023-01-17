@@ -8,7 +8,7 @@ All requests to the flixnow API are HTTP GET requests. API responses are only av
 
 #### Errors
 
-When something goes wrongs, flixnow will respond with the appropriate HTTP status code and an `AppError`. This can be one of:
+When something goes wrong, flixnow will respond with the appropriate HTTP status code and an `AppError`. This can be one of:
 
 - `ValidationError`: Thrown when user input can't be validated
 - `ProviderError`: Thrown when TMDb fails to respond with valid payload
@@ -16,7 +16,7 @@ When something goes wrongs, flixnow will respond with the appropriate HTTP statu
 - `ServerError`: Generic server error
 - `MethodError`: Method not allowed
 
-See [AppError.ts](./src/server/Error.ts) file for details.
+See [server/Error.ts](./src/server/Error.ts) file for details.
 
 ### Search movies
 
@@ -60,7 +60,7 @@ PORT=8000 \
 
 #### Environment variables
 
-- `PORT` is by default `8000`
+- `PORT` is by default `8070`
 - `THEMOVIEDB_API_KEY` should be set to your [themoviedb.org](https://www.themoviedb.org) API key and has no default. You can obtain your key from [this page](https://www.themoviedb.org/settings/api).
 - `CACHE_MAX_SIZE` Max number of items in cache.
 - `CACHE_MAX_AGE` Max cache age.
