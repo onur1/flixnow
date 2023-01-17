@@ -50,6 +50,8 @@ Start TypeScript compiler in watch mode
 npm run watch-server
 ```
 
+### Running server
+
 Start a server on port `8000`
 
 ```
@@ -83,6 +85,24 @@ Get build stats
 
 ```
 npm run webpack-stats
+```
+
+### Serving app
+
+Use any static server to serve files under `public`
+
+python27
+
+```py
+cd public && \
+ python -m SimpleHTTPServer 8090 .
+```
+
+python3
+
+```py
+cd public && \
+ python3 -m http.server 8090
 ```
 
 ### Running tests
