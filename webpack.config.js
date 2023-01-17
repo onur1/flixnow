@@ -4,7 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const config = {
   entry: './src/app/index.ts',
   output: {
-    filename: './bundle.js',
+    filename: './flixbox.js',
     path: __dirname + '/public',
     library: 'flixbox',
     libraryTarget: 'window',
@@ -30,6 +30,7 @@ const config = {
 }
 
 if (process.env.NODE_ENV === 'production') {
+  config.output.filename = './flixbox.min.js'
   config.mode = 'production'
   config.devtool = false
   config.plugins = [

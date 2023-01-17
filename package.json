@@ -4,14 +4,6 @@
   "version": "0.0.0",
   "description": "",
   "main": "lib/server/server/index.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "files": [
-    "lib",
-    "public",
-    "LICENSE"
-  ],
   "scripts": {
     "start": "node lib/server/server/index.js",
     "jest": "jest --runInBand",
@@ -33,7 +25,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "",
+  "license": "MIT",
   "devDependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",

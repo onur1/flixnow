@@ -3,3 +3,4 @@ coverage
 lib
 .vscode
 public/bundle.js*
+.release
