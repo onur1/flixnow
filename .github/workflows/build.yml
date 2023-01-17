@@ -94,7 +94,7 @@ jobs:
             jq '. + { "name": "@onur1/flixbox-server", "main": "lib/server/index.js", "bin": "lib/server/index.js" }' \
             > .release/server/package.json
 
-          echo '#!/usr/bin/env node\n\n' > .release/server/lib/server/tmp.js
+          echo '#!/usr/bin/env node' > .release/server/lib/server/tmp.js
           cat .release/server/lib/server/index.js >> .release/server/lib/server/tmp.js
           mv .release/server/lib/server/tmp.js .release/server/lib/server/index.js
           chmod +x .release/server/lib/server/index.js
