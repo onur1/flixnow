@@ -30,7 +30,13 @@ jobs:
           fetch-depth: 0
 
       - name: Install
-        run: npm install
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          touch .npmrc
+          echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" > .npmrc
+          echo "@onur1:registry=https://npm.pkg.github.com" >> .npmrc
+          npm install
 
       - name: Test
         run: npm run test
