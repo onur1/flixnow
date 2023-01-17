@@ -26,7 +26,7 @@
     "lint": "eslint src __tests__",
     "prettier": "prettier --list-different \"./{src,__tests__}/**/*.ts\"",
     "fix-prettier": "prettier --write \"./{src,__tests__}/**/*.ts\"",
-    "test": "npm run lint && npm run prettier && npm run jest-clear-cache && npm run jest",
+    "test": "npm run clean && npm run build-server && npm run lint && npm run prettier && npm run jest-clear-cache && npm run jest",
     "webpack": "npm run clean-app && webpack --config webpack.config.js",
     "webpack-release": "npm run clean-app && NODE_ENV=production npm run webpack",
     "webpack-stats": "npm run clean-app && rimraf stats.json && webpack --json --config webpack.config.js > stats.json"
