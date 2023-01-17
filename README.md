@@ -1,5 +1,7 @@
 # flixnow
 
+[![build](https://github.com/onur1/flixnow/actions/workflows/main.yml/badge.svg)](https://github.com/onur1/flixnow/actions/workflows/main.yml)
+
 ## API
 
 #### Requests and data formats
