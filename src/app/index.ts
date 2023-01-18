@@ -10,7 +10,7 @@ import { render } from 'react-dom'
 import { createElement } from 'react'
 import { navigate, Msg, pushUrl, updateSearchTerm, SubmitSearch } from './Msg'
 import { Model, zero } from './Model'
-import { update } from './Effect'
+import { createEffectHandler } from './Effect'
 import Layout from './components/Layout'
 
 const getHandlers = memoize((go: Dispatch<Msg>) => ({
@@ -40,12 +40,13 @@ function view(model: Model): Html<Msg> {
   return f => createElement(Layout, { model, ...getHandlers(f) })
 }
 
-const app = program(
-  navigate,
-  flow(navigate, cmd => [zero(cmd.route), perform(identity)(T.fromIO(() => cmd))]),
-  update,
-  view
-)
+const createApp = (apiUrl: string) =>
+  program(
+    navigate,
+    flow(navigate, cmd => [zero(cmd.route), perform(identity)(T.fromIO(() => cmd))]),
+    createEffectHandler(apiUrl),
+    view
+  )
 
 function memoize<A, B>(f: (a: A) => B): (a: A) => B {
   let memo: B
@@ -59,14 +60,10 @@ function memoize<A, B>(f: (a: A) => B): (a: A) => B {
   }
 }
 
-const mount = (elementId: string) =>
+const mount = (apiUrl: string, elementId: string) =>
   pipe(
     O.fromNullable(document.getElementById(elementId)),
-    O.fold(warn('#content missing'), el => run(app, dom => render(dom, el)))
+    O.fold(warn('#content missing'), el => run(createApp(apiUrl), dom => render(dom, el)))
   )
 
 export default mount
-
-if (require.main == module) {
-  mount('content')
-}
