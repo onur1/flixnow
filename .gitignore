@@ -2,5 +2,5 @@ coverage
 .npmrc
 lib
 .vscode
-public/bundle.js*
+public/flixbox.*
 .release
