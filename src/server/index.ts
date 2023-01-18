@@ -20,6 +20,7 @@ export interface Options {
   storage: Storage<CachedObject>
   port: string
   basePath?: string
+  corsOrigin: string
 }
 
 function printObject(o: unknown): string {
@@ -42,7 +43,7 @@ const main = <E = never>(
   onError: (reason: unknown) => E
 ): ((ma: TE.TaskEither<E, Options>) => TE.TaskEither<E, string>) =>
   flow(
-    TE.chain<E, Options, Server>(opts => listen(flixbox(opts, onError), opts.port, onError)),
+    TE.chain<E, Options, Server>(opts => listen(flixbox(opts, onError), opts.port, opts.corsOrigin, onError)),
     TE.map(server => `listening on ${printObject(server.address())}`)
   )
 
@@ -71,6 +72,7 @@ const optionsFromEnv: E.Either<string, Options> = pipe(
       E.map(xacheOpts => createXacheStorage<CachedObject>(xacheOpts))
     ),
     basePath: envOrElse('BASE_PATH', t.union([t.string, t.undefined]), undefined),
+    corsOrigin: envOrElse('CORS_ORIGIN', t.string, '*'),
     tmdb: pipe(envOrElse('THEMOVIEDB_API_KEY', t.string), E.map(themoviedb)),
   })
 )
