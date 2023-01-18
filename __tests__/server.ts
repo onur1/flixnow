@@ -66,7 +66,7 @@ describe('flixbox', () => {
   it('should hit cache', () => {
     const tmdb = createTMDb(reject, id => TE.right({ ...testData.dulevande, ...{ id } }))
     const db = createXacheStorage<Movie | SearchResultSet>({ maxAge: 1000, maxSize: 10 })
-    const m = flixbox(tmdb, db, throwError)
+    const m = flixbox({ tmdb, storage: db, port: '0' }, throwError)
     return assertSuccess(m, new MockConnection(new MockRequest('/movie/42')), [
       { body: JSON.stringify({ ...testData.dulevande, ...{ id: 42 } }), type: 'setBody' },
       { name: 'Content-Type', type: 'setHeader', value: 'application/json' },
@@ -86,7 +86,7 @@ describe('flixbox', () => {
   it('should return 404 on invalid route', () => {
     const tmdb = createTMDb(reject, reject)
     const db = createXacheStorage<Movie | SearchResultSet>({ maxAge: 1000, maxSize: 10 })
-    const m = flixbox(tmdb, db, throwError)
+    const m = flixbox({ tmdb, storage: db, port: '0' }, throwError)
     return assertSuccess(m, new MockConnection(new MockRequest('/movie/stringsnotaccepted')), [
       { body: '{"_tag":"NotFoundError"}', type: 'setBody' },
       { name: 'Content-Type', type: 'setHeader', value: 'application/json' },
@@ -96,7 +96,7 @@ describe('flixbox', () => {
   it('should raise 500 and forward provider error', () => {
     const tmdb = createTMDb(reject, reject)
     const db = createXacheStorage<Movie | SearchResultSet>({ maxAge: 1000, maxSize: 1000 })
-    const m = flixbox(tmdb, db, throwError)
+    const m = flixbox({ tmdb, storage: db, port: '0' }, throwError)
     return assertSuccess(m, new MockConnection(new MockRequest('/movie/42')), [
       { body: '{"_tag":"ProviderError","error":{"_tag":"BadUrl","value":"tmdb"}}', type: 'setBody' },
       { name: 'Content-Type', type: 'setHeader', value: 'application/json' },
@@ -106,7 +106,7 @@ describe('flixbox', () => {
   it('should not respond to empty search_query', () => {
     const tmdb = createTMDb(reject, reject)
     const db = createXacheStorage<Movie | SearchResultSet>({ maxAge: 1000, maxSize: 1000 })
-    const m = flixbox(tmdb, db, throwError)
+    const m = flixbox({ tmdb, storage: db, port: '0' }, throwError)
     return assertSuccess(m, new MockConnection(new MockRequest('/results')), [
       { body: '{"_tag":"ValidationError","messages":["empty search_query"]}', type: 'setBody' },
       { name: 'Content-Type', type: 'setHeader', value: 'application/json' },

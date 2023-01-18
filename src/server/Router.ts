@@ -12,9 +12,21 @@ export const SearchQuery = t.interface({
   search_query: t.union([t.string, t.undefined]),
 })
 
-export const results = lit('results').then(query(SearchQuery))
+export function createResultsMatcher(basePath: string) {
+  const m = lit('results').then(query(SearchQuery))
+  if (basePath.length) {
+    return lit(basePath).then(m)
+  }
+  return m
+}
 
-export const movie = lit('movie').then(int('id'))
+export function createMovieMatcher(basePath: string) {
+  const m = lit('movie').then(int('id'))
+  if (basePath.length) {
+    return lit(basePath).then(m)
+  }
+  return m
+}
 
 export type Movie = {
   _tag: 'Movie'
@@ -36,19 +48,21 @@ export function resultsLocation(query: O.Option<string>): Results {
 
 export type Location = Movie | Results
 
-const locationParser = zero<Location>()
-  .alt(
-    movie.parser.map(({ id }) => ({
-      _tag: 'Movie',
-      id,
-    }))
-  )
-  .alt(
-    results.parser.map(q => ({
-      _tag: 'Results',
-      query: O.fromNullable(q.search_query),
-    }))
-  )
+function createLocationParser(basePath: string) {
+  return zero<Location>()
+    .alt(
+      createMovieMatcher(basePath).parser.map(({ id }) => ({
+        _tag: 'Movie',
+        id,
+      }))
+    )
+    .alt(
+      createResultsMatcher(basePath).parser.map(q => ({
+        _tag: 'Results',
+        query: O.fromNullable(q.search_query),
+      }))
+    )
+}
 
 export function fromParser<L, A extends object>(
   parser: P.Parser<A>,
@@ -65,4 +79,5 @@ export function fromParser<L, A extends object>(
   )
 }
 
-export const parseLocation = fromParser<AppError, Location>(locationParser, NotFoundError)
+export const parseLocation = (basePath = '') =>
+  fromParser<AppError, Location>(createLocationParser(basePath), NotFoundError)

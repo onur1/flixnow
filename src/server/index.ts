@@ -16,9 +16,10 @@ import { Storage } from '../storage/Storage'
 import createXacheStorage from '../storage/Xache'
 
 export interface Options {
-  port: string
   tmdb: TMDb
   storage: Storage<CachedObject>
+  port: string
+  basePath?: string
 }
 
 function printObject(o: unknown): string {
@@ -31,18 +32,17 @@ function printObject(o: unknown): string {
 }
 
 export const flixbox = <E = never>(
-  tmdb: TMDb,
-  storage: Storage<CachedObject>,
+  { tmdb, storage, basePath }: Options,
   onError: (reason: unknown) => E
 ): H.Middleware<StatusOpen, ResponseEnded, E, void> => {
-  return pipe(parseLocation, H.ichain(createFromLocation(tmdb, storage)), H.orElse(destroy(onError)))
+  return pipe(parseLocation(basePath), H.ichain(createFromLocation(tmdb, storage)), H.orElse(destroy(onError)))
 }
 
 const main = <E = never>(
   onError: (reason: unknown) => E
 ): ((ma: TE.TaskEither<E, Options>) => TE.TaskEither<E, string>) =>
   flow(
-    TE.chain<E, Options, Server>(({ port, tmdb, storage }) => listen(flixbox(tmdb, storage, onError), port, onError)),
+    TE.chain<E, Options, Server>(opts => listen(flixbox(opts, onError), opts.port, onError)),
     TE.map(server => `listening on ${printObject(server.address())}`)
   )
 
@@ -70,6 +70,7 @@ const optionsFromEnv: E.Either<string, Options> = pipe(
       ),
       E.map(xacheOpts => createXacheStorage<CachedObject>(xacheOpts))
     ),
+    basePath: envOrElse('BASE_PATH', t.union([t.string, t.undefined]), undefined),
     tmdb: pipe(envOrElse('THEMOVIEDB_API_KEY', t.string), E.map(themoviedb)),
   })
 )
