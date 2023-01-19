@@ -1,15 +1,18 @@
 import { pipe } from 'fp-ts/lib/function'
 import { ResponseEnded, Status, StatusOpen } from 'hyper-ts'
 import * as H from 'hyper-ts/lib/Middleware'
-import { AppError, ProviderError } from '../Error'
+import { AppError, printAppError, ProviderError } from '../Error'
+import * as C from '../../logging/Console'
 
 function sendError<E = never>(
   code: Status,
+  actualEr: AppError,
   er: AppError,
   onError: (reason: unknown) => E
 ): H.Middleware<StatusOpen, ResponseEnded, E, void> {
   return pipe(
-    H.status(code),
+    H.fromTaskEither(C.consoleTaskEither.error(printAppError(actualEr))),
+    H.ichain(() => H.status(code)),
     H.ichain(() => H.json(er, onError))
   )
 }
@@ -22,20 +25,21 @@ export function destroy<E = never>(
       case 'ProviderError':
         return sendError(
           Status.InternalServerError,
+          er,
           {
             ...er,
-            ...{ error: { _tag: er.error._tag, value: 'tmdb' } },
+            ...{ error: { _tag: er.error._tag, value: 'TMDb' } },
           } as ProviderError,
           onError
         )
       case 'ValidationError':
-        return sendError(Status.BadRequest, er, onError)
+        return sendError(Status.BadRequest, er, er, onError)
       case 'ServerError':
-        return sendError(Status.InternalServerError, er, onError)
+        return sendError(Status.InternalServerError, er, er, onError)
       case 'NotFoundError':
-        return sendError(Status.NotFound, er, onError)
+        return sendError(Status.NotFound, er, er, onError)
       case 'MethodError':
-        return sendError(Status.MethodNotAllowed, er, onError)
+        return sendError(Status.MethodNotAllowed, er, er, onError)
     }
   }
 }
