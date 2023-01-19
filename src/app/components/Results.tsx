@@ -18,21 +18,27 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       width: '100%',
+      '& .MuiListItem-gutters': {
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
     },
     block: {
       display: 'block',
     },
     avatar: {
-      height: 240,
-      width: 160,
+      height: 180,
+      width: 100,
       backgroundColor: '#e8e8e8',
     },
     listItemText: {
       marginLeft: 20,
     },
     divider: {
-      margin: 12,
+      marginTop: 12,
       marginBottom: 5,
+      marginLeft: 0,
+      marginRight: 0,
     },
     simpleRating: {
       marginTop: 10,
@@ -48,7 +54,7 @@ const useStyles = makeStyles(() =>
     description: {
       marginTop: 10,
       display: 'block',
-      fontSize: 16,
+      fontSize: 14,
     },
   })
 )

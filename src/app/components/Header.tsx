@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       display: 'none',
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up('md')]: {
         display: 'block',
       },
       fontWeight: 700,
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       marginLeft: 0,
       width: '100%',
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up('md')]: {
         marginLeft: theme.spacing(3),
         width: 'auto',
       },
@@ -51,9 +51,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     appBar: {
       backgroundColor: '#fff',
-      paddingTop: '12px!important',
-      paddingBottom: '12px!important',
-      paddingLeft: '10px!important',
+      '& .MuiToolbar-root': {
+        minHeight: 64,
+      },
+      '& .MuiToolbar-gutters': {
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
     },
   })
 )
