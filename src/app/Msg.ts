@@ -56,8 +56,18 @@ export interface SetSearchResults {
   readonly results: Array<SearchResult>
 }
 
+export interface SetPopularResults {
+  readonly _tag: 'SetPopularResults'
+  readonly results: Array<SearchResult>
+}
+
 export const setSearchResults = (results: Array<SearchResult>): SetSearchResults => ({
   _tag: 'SetSearchResults',
+  results,
+})
+
+export const setPopularResults = (results: Array<SearchResult>): SetPopularResults => ({
+  _tag: 'SetPopularResults',
   results,
 })
 
@@ -79,4 +89,5 @@ export type Msg =
   | SetHttpError
   | SetNotification
   | SetSearchResults
+  | SetPopularResults
   | SetMovie

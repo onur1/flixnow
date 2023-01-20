@@ -10,12 +10,16 @@ import { Movie } from './model/Movie'
 const API_URL = 'https://api.themoviedb.org/3'
 
 export interface TMDb {
+  popular: TE.TaskEither<HttpError, SearchResultSet>
   search: (term: string) => TE.TaskEither<HttpError, SearchResultSet>
   movie: (id: number) => TE.TaskEither<HttpError, t.TypeOf<typeof Movie>>
 }
 
 export function themoviedb(apiKey: string): TMDb {
   return {
+    popular: toTaskEither(
+      get(`${API_URL}/movie/popular?api_key=${apiKey}&include_adult=false`, expected(SearchResultSet))
+    ),
     search: (term: string) =>
       toTaskEither(
         get(

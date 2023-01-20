@@ -9,7 +9,16 @@ import { HttpError } from '@onur1/axios-ts/lib/Error'
 import { attempt } from 'elm-ts/lib/Task'
 import { Lens } from 'monocle-ts'
 import * as flixbox from './Client'
-import { Msg, Navigate, PushUrl, pushUrl as pushUrlMsg, setHttpError, setMovie, setSearchResults } from './Msg'
+import {
+  Msg,
+  Navigate,
+  PushUrl,
+  pushUrl as pushUrlMsg,
+  setHttpError,
+  setMovie,
+  setPopularResults,
+  setSearchResults,
+} from './Msg'
 import {
   Model,
   routeLens,
@@ -18,6 +27,7 @@ import {
   notificationLens,
   searchResultsLens,
   movieLens,
+  popularResultsLens,
 } from './Model'
 import { hrefs } from './Router'
 
@@ -78,7 +88,7 @@ export function createEffectHandler(apiUrl: string): (msg: Msg, model: Model) =>
               flixbox.getSearchRequest(apiUrl)(q),
               setHttpError,
               res => pipe(res.results, setSearchResults),
-              routeLens.set(msg.route)(init)
+              routeLens.set(msg.route)(searchTermLens.set(q)(init))
             )
           }
         } else if (msg.route._tag === 'Movie') {
@@ -88,16 +98,24 @@ export function createEffectHandler(apiUrl: string): (msg: Msg, model: Model) =>
             setMovie,
             routeLens.set(msg.route)(withoutSearchResults(init))
           )
+        } else if (msg.route._tag === 'Home') {
+          return request(
+            flixbox.getPopularRequest(apiUrl),
+            setHttpError,
+            res => pipe(res.results, setPopularResults),
+            routeLens.set(msg.route)(withoutSearchResults(searchTermLens.set('')(init)))
+          )
         }
-        return navigate(msg, withoutSearchResults(init))
+        return navigate(msg, withoutSearchResults(searchTermLens.set('')(init)))
       }
       case 'SetNotification':
         return modify(notificationLens, () => ({ severity: msg.severity, text: msg.text }), model)
       case 'SetHttpError':
         return modify(notificationLens, () => ({ severity: 'error' as const, text: msg.error._tag }), model)
-      case 'SetSearchResults': {
+      case 'SetSearchResults':
         return modify(searchResultsLens, () => msg.results, model)
-      }
+      case 'SetPopularResults':
+        return modify(popularResultsLens, () => msg.results, model)
     }
   }
 }

@@ -7,11 +7,20 @@ import classNames from 'classnames'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Alert from '@material-ui/lab/Alert'
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles'
-import { Model, movieOptional, notificationOptional, routeLens, searchResultsLens, searchTermOptional } from '../Model'
+import {
+  Model,
+  movieOptional,
+  notificationOptional,
+  popularResultsLens,
+  routeLens,
+  searchResultsLens,
+  searchTermOptional,
+} from '../Model'
 import NotFound from './NotFound'
 import Header from './Header'
 import Results from './Results'
 import Movie from './Movie'
+import Home from './Home'
 
 const theme = createTheme({
   palette: {
@@ -89,7 +98,9 @@ class Layout extends React.Component<LayoutProps> {
         />
         <div className={classes.root}>
           <main className={notification ? classes.content : classNames(classes.content, classes.contentPaddingTop)}>
-            {route._tag === 'Home' ? null : route._tag === 'Results' ? (
+            {route._tag === 'Home' ? (
+              <Home onLink={onLink} results={popularResultsLens.get(model)} />
+            ) : route._tag === 'Results' ? (
               <Results onLink={onLink} results={searchResultsLens.get(model)} />
             ) : route._tag === 'Movie' ? (
               <Movie movie={movieOptional.getOption(model)} onLink={onLink} />

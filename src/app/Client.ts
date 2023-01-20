@@ -13,3 +13,7 @@ export function getSearchRequest(apiUrl: string): (term: string) => SearchReques
 export function getMovieRequest(apiUrl: string): (id: number) => MovieRequest {
   return id => get(`${apiUrl}/movie/${id}`, expected(Movie))
 }
+
+export function getPopularRequest(apiUrl: string): SearchRequest {
+  return get(`${apiUrl}/popular`, expected(SearchResultSet))
+}

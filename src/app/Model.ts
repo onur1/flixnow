@@ -15,6 +15,7 @@ export const Model = t.interface({
   route: t.unknown,
   searchTerm: t.union([t.string, t.undefined]),
   searchResults: t.array(SearchResult),
+  popularResults: t.array(SearchResult),
   notification: t.union([Notification, t.undefined]),
   movie: t.union([Movie, t.undefined]),
 })
@@ -33,6 +34,8 @@ export const notificationLens = Lens.fromProp<Model>()('notification')
 
 export const searchResultsLens = Lens.fromProp<Model>()('searchResults')
 
+export const popularResultsLens = Lens.fromProp<Model>()('popularResults')
+
 export const movieLens = Lens.fromProp<Model>()('movie')
 
 export const movieOptional = Optional.fromNullableProp<Model>()('movie')
@@ -43,6 +46,7 @@ export function zero(route: Location): Model {
     searchTerm: route._tag === 'Results' ? toUndefined(route.query) : undefined,
     notification: undefined,
     searchResults: [],
+    popularResults: [],
     movie: undefined,
   }
 }

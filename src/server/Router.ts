@@ -12,13 +12,11 @@ export const SearchQuery = t.interface({
   search_query: t.union([t.string, t.undefined]),
 })
 
-export function createResultsMatcher(basePath: string) {
-  const m = lit('results').then(query(SearchQuery))
-  if (basePath.length) {
-    return lit(basePath).then(m)
-  }
-  return m
-}
+const resultsMatcher = lit('results').then(query(SearchQuery))
+
+const popularMatcher = lit('popular')
+
+const movieMatcher = lit('movie').then(int('id'))
 
 export function createMovieMatcher(basePath: string) {
   const m = lit('movie').then(int('id'))
@@ -46,22 +44,28 @@ export function resultsLocation(query: O.Option<string>): Results {
   return { _tag: 'Results', query }
 }
 
-export type Location = Movie | Results
+export const popularLocation = { _tag: 'Popular' } as const
+
+export type Popular = typeof popularLocation
+
+export type Location = Movie | Results | Popular
 
 function createLocationParser(basePath: string) {
+  const baseMatcher = lit(basePath)
   return zero<Location>()
     .alt(
-      createMovieMatcher(basePath).parser.map(({ id }) => ({
+      baseMatcher.then(movieMatcher).parser.map(({ id }) => ({
         _tag: 'Movie',
         id,
       }))
     )
     .alt(
-      createResultsMatcher(basePath).parser.map(q => ({
+      baseMatcher.then(resultsMatcher).parser.map(q => ({
         _tag: 'Results',
         query: O.fromNullable(q.search_query),
       }))
     )
+    .alt(baseMatcher.then(popularMatcher).parser.map(() => popularLocation))
 }
 
 export function fromParser<L, A extends object>(
