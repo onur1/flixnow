@@ -16,6 +16,7 @@ export const ProductionCountry = t.interface({
 export const SpokenLanguage = t.interface({
   iso_639_1: t.string,
   name: t.string,
+  english_name: t.string,
 })
 
 export const Video = t.interface({
