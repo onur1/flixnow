@@ -44,16 +44,18 @@ const theme = createTheme({
 const styles = (_theme: Theme) => ({
   root: {
     display: 'flex',
+    height: '100%',
   },
   content: {
     flexGrow: 1,
     paddingTop: 0,
+    height: '100%',
   },
   alert: {
-    marginTop: 52,
+    marginTop: 62,
   },
   contentPaddingTop: {
-    paddingTop: 52,
+    paddingTop: 62,
   },
 })
 

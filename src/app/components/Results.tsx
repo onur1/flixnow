@@ -27,7 +27,7 @@ const useStyles = makeStyles(() =>
       display: 'block',
     },
     avatar: {
-      height: 180,
+      height: 120,
       width: 100,
       backgroundColor: '#e8e8e8',
     },

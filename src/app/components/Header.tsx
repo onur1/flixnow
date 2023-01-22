@@ -52,7 +52,9 @@ const useStyles = makeStyles((theme: Theme) =>
     appBar: {
       backgroundColor: '#fff',
       '& .MuiToolbar-root': {
-        minHeight: 64,
+        height: 48,
+        minHeight: 'auto',
+        marginBottom: 12,
       },
       '& .MuiToolbar-gutters': {
         paddingLeft: 0,
