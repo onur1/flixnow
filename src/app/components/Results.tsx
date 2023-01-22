@@ -102,7 +102,7 @@ const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
                       ) : null}
 
                       <span className={classes.description}>
-                        {overview}
+                        {overview.length > 240 ? overview.slice(0, 240) + '...' : overview}
                         <span className={classes.simpleRating}>
                           <Rating name="read-only" value={Math.min(5, vote_average / 2)} size="small" readOnly />
                         </span>
