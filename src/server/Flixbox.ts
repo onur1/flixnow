@@ -49,14 +49,14 @@ function getSearchResultsMiddleware(
         H.apSecond(
           pipe(
             get(store, `/results/${query}`),
-            H.imap(entry => entry.value),
+            H.map(entry => entry.value),
             H.orElse(() =>
               pipe(
                 results(tmdb, query),
-                H.ichain(value =>
+                H.chain(value =>
                   pipe(
                     put(store, `/results/${query}`, value),
-                    H.imap(entry => entry.value)
+                    H.map(entry => entry.value)
                   )
                 )
               )
@@ -94,11 +94,11 @@ function getMovieMiddleware(
       H.apSecond(
         pipe(
           get(store, `/movies/${String(route.id)}`),
-          H.imap(entry => entry.value),
+          H.map(entry => entry.value),
           H.orElse(() =>
             pipe(
               movie(tmdb, route.id),
-              H.ichain(value =>
+              H.chain(value =>
                 pipe(
                   put(store, `/movies/${String(route.id)}`, value),
                   H.map(entry => entry.value)
@@ -127,11 +127,11 @@ function getPopularMiddleware(
     H.apSecond(
       pipe(
         get(store, '/popular'),
-        H.imap(entry => entry.value),
+        H.map(entry => entry.value),
         H.orElse(() =>
           pipe(
             go,
-            H.ichain(value =>
+            H.chain(value =>
               pipe(
                 put(store, `/popular`, value),
                 H.map(entry => entry.value)
