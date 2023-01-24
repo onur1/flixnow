@@ -1,10 +1,13 @@
 import { right, left } from 'fp-ts/lib/Either'
-import { decodeMethod } from 'hyper-ts/lib/Middleware'
+import { StatusOpen } from 'hyper-ts'
+import { decodeMethod, Middleware } from 'hyper-ts/lib/Middleware'
 import { MethodError, AppError } from '../Error'
 
-function method<T>(name: string) {
+function method<A>(name: string): Middleware<StatusOpen, StatusOpen, AppError, A> {
+  const lowercaseName = name.toLowerCase()
+  const uppercaseName = name.toUpperCase()
   return decodeMethod(s =>
-    s.toLowerCase() === name.toLowerCase() ? right<AppError, T>(name.toUpperCase() as any) : left(MethodError)
+    s.toLowerCase() === lowercaseName ? right<AppError, A>(uppercaseName as A) : left(MethodError)
   )
 }
 
