@@ -18,9 +18,9 @@ import createXacheStorage from '../storage/Xache'
 export interface Options {
   tmdb: TMDb
   storage: Storage<CachedObject>
-  port: string
+  port?: string
   basePath?: string
-  corsOrigin: string
+  corsOrigin?: string
 }
 
 function printObject(o: unknown): string {
@@ -33,10 +33,14 @@ function printObject(o: unknown): string {
 }
 
 export const flixbox = <E = never>(
-  { tmdb, storage, basePath }: Options,
+  opts: Options,
   onError: (reason: unknown) => E
 ): H.Middleware<StatusOpen, ResponseEnded, E, void> => {
-  return pipe(parseLocation(basePath), H.ichain(createFromLocation(tmdb, storage)), H.orElse(destroy(onError)))
+  return pipe(
+    parseLocation(opts.basePath),
+    H.ichain(createFromLocation(opts.tmdb, opts.storage)),
+    H.orElse(destroy(onError))
+  )
 }
 
 const main = <E = never>(
@@ -47,10 +51,17 @@ const main = <E = never>(
     TE.map(server => `listening on ${printObject(server.address())}`)
   )
 
-function envOrElse<A>(key: string, expected: t.Type<A>, defaultValue?: A) {
+function envOrElse<A>(key: string, expected: t.Type<A>, defaultValue: A) {
   return pipe(
     expected.decode(process.env[key]),
-    E.orElse(() => (defaultValue ? E.right(defaultValue) : E.left(`missing env variable: ${key}`)))
+    E.orElse(() => E.right(defaultValue))
+  )
+}
+
+function envOrExit<A>(key: string, expected: t.Type<A>) {
+  return pipe(
+    expected.decode(process.env[key]),
+    E.orElse(() => E.left(`missing env variable: ${key}`))
   )
 }
 
@@ -71,9 +82,9 @@ const optionsFromEnv: E.Either<string, Options> = pipe(
       ),
       E.map(xacheOpts => createXacheStorage<CachedObject>(xacheOpts))
     ),
-    basePath: envOrElse('BASE_PATH', t.union([t.string, t.undefined]), undefined),
+    basePath: envOrElse('BASE_PATH', t.string, ''),
     corsOrigin: envOrElse('CORS_ORIGIN', t.string, '*'),
-    tmdb: pipe(envOrElse('THEMOVIEDB_API_KEY', t.string), E.map(themoviedb)),
+    tmdb: pipe(envOrExit('THEMOVIEDB_API_KEY', t.string), E.map(themoviedb)),
   })
 )
 

@@ -7,8 +7,8 @@ import cors from 'cors'
 
 export function listen<I, O, E = never>(
   ma: Middleware<I, O, E, void>,
-  port: string,
-  corsOrigin: string,
+  port = '0',
+  corsOrigin = '*',
   onError: (reason: unknown) => E
 ): TE.TaskEither<E, Server> {
   return TE.tryCatch<E, Server>(() => {

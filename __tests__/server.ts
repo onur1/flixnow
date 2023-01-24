@@ -49,7 +49,7 @@ function createTMDb(
   search: (term: string) => TE.TaskEither<HttpError, SearchResultSet>,
   movie: (id: number) => TE.TaskEither<HttpError, t.TypeOf<typeof Movie>>
 ): TMDb {
-  return { search, movie }
+  return { search, movie, popular: reject() }
 }
 
 const reject = <A = never>() =>
@@ -98,7 +98,7 @@ describe('flixbox', () => {
     const db = createXacheStorage<Movie | SearchResultSet>({ maxAge: 1000, maxSize: 1000 })
     const m = flixbox({ tmdb, storage: db, port: '0' }, throwError)
     return assertSuccess(m, new MockConnection(new MockRequest('/movie/42')), [
-      { body: '{"_tag":"ProviderError","error":{"_tag":"BadUrl","value":"tmdb"}}', type: 'setBody' },
+      { body: '{"_tag":"ProviderError","error":{"_tag":"BadUrl","value":"TMDb"}}', type: 'setBody' },
       { name: 'Content-Type', type: 'setHeader', value: 'application/json' },
       { status: 500, type: 'setStatus' },
     ])
