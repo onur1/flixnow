@@ -77,8 +77,7 @@ type LayoutProps = {
 @props(LayoutProps)
 class Layout extends React.Component<LayoutProps> {
   render() {
-    const props = this.props
-    const { model, onLink, classes, onSearchChange, onSearchSubmit } = props
+    const { model, onLink, classes, onSearchChange, onSearchSubmit } = this.props
     const notification = toUndefined(notificationOptional.getOption(model))
     const route = routeLens.get(model)
 
