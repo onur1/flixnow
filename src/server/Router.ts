@@ -18,14 +18,6 @@ const popularMatcher = lit('popular')
 
 const movieMatcher = lit('movie').then(int('id'))
 
-export function createMovieMatcher(basePath: string) {
-  const m = lit('movie').then(int('id'))
-  if (basePath.length) {
-    return lit(basePath).then(m)
-  }
-  return m
-}
-
 export type Movie = {
   _tag: 'Movie'
   id: number
@@ -52,20 +44,23 @@ export type Location = Movie | Results | Popular
 
 function createLocationParser(basePath: string) {
   const baseMatcher = lit(basePath)
+  const getParser: (m: P.Match<any>) => P.Parser<any> = basePath.length
+    ? match => baseMatcher.then(match).parser
+    : match => match.parser
   return zero<Location>()
     .alt(
-      baseMatcher.then(movieMatcher).parser.map(({ id }) => ({
+      getParser(movieMatcher).map(({ id }) => ({
         _tag: 'Movie',
         id,
       }))
     )
     .alt(
-      baseMatcher.then(resultsMatcher).parser.map(q => ({
+      getParser(resultsMatcher).map(q => ({
         _tag: 'Results',
         query: O.fromNullable(q.search_query),
       }))
     )
-    .alt(baseMatcher.then(popularMatcher).parser.map(() => popularLocation))
+    .alt(getParser(popularMatcher).map(() => popularLocation))
 }
 
 export function fromParser<L, A extends object>(
