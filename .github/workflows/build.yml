@@ -31,7 +31,7 @@ jobs:
 
       - name: Install
         env:
-          PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           touch .npmrc
           echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" > .npmrc
