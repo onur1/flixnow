@@ -1,9 +1,9 @@
 import * as t from 'io-ts'
 import * as TE from 'fp-ts/lib/TaskEither'
-import { toTaskEither } from '@onur1/axios-ts/lib/TaskEither'
-import { get } from '@onur1/axios-ts/lib/Client'
-import { expected } from '@onur1/axios-ts/lib/Expected'
-import { HttpError } from '@onur1/axios-ts/lib/Error'
+import { toTaskEither } from '@tetsuo/axios-ts/lib/TaskEither'
+import { get } from '@tetsuo/axios-ts/lib/Client'
+import { expected } from '@tetsuo/axios-ts/lib/Expected'
+import { HttpError } from '@tetsuo/axios-ts/lib/Error'
 import { SearchResultSet } from './model/SearchResultSet'
 import { Movie } from './model/Movie'
 

@@ -1,5 +1,5 @@
 import { Location } from 'history'
-import { HttpError } from '@onur1/axios-ts/lib/Error'
+import { HttpError } from '@tetsuo/axios-ts/lib/Error'
 import { Location as Route, parse } from './Router'
 import { Movie, SearchResult } from '../tmdb/model'
 

@@ -1,5 +1,5 @@
-import { get, Request } from '@onur1/axios-ts/lib/Client'
-import { expected } from '@onur1/axios-ts/lib/Expected'
+import { get, Request } from '@tetsuo/axios-ts/lib/Client'
+import { expected } from '@tetsuo/axios-ts/lib/Expected'
 import { Movie, SearchResultSet } from '../tmdb/model'
 
 export type SearchRequest = Request<SearchResultSet>

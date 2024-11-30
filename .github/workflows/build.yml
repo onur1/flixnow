@@ -35,7 +35,7 @@ jobs:
         run: |
           touch .npmrc
           echo "//npm.pkg.github.com/:_authToken=$PACKAGE_TOKEN" > .npmrc
-          echo "@onur1:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "@tetsuo:registry=https://npm.pkg.github.com" >> .npmrc
           npm install
 
       - name: Test
@@ -91,7 +91,7 @@ jobs:
           cat package.json | \
             jq 'del(.devDependencies, .scripts, .private)' | \
             jq '. + { "publishConfig": { "registry":"https://npm.pkg.github.com/" } }' | \
-            jq '. + { "name": "@onur1/flixbox-server", "main": "lib/server/index.js", "bin": "lib/server/index.js" }' \
+            jq '. + { "name": "@tetsuo/flixbox-server", "main": "lib/server/index.js", "bin": "lib/server/index.js" }' \
             > .release/server/package.json
 
           echo '#!/usr/bin/env node' > .release/server/lib/server/tmp.js
@@ -109,7 +109,7 @@ jobs:
 
           touch .release/server/.npmrc
           echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" > .release/server/.npmrc
-          echo "@onur1:registry=https://npm.pkg.github.com" >> .release/server/.npmrc
+          echo "@tetsuo:registry=https://npm.pkg.github.com" >> .release/server/.npmrc
 
           git fetch --all --tags
 

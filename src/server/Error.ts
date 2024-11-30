@@ -1,6 +1,6 @@
 import * as t from 'io-ts'
 import { failure } from 'io-ts/lib/PathReporter'
-import { HttpError } from '@onur1/axios-ts/lib/Error'
+import { HttpError } from '@tetsuo/axios-ts/lib/Error'
 
 export const MethodError = { _tag: 'MethodError' } as const
 
