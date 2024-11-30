@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [17.0.x]
+        node-version: [20.0.x]
     steps:
       - name: Set up NodeJS
         uses: actions/setup-node@v2
@@ -34,9 +34,10 @@ jobs:
           PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
         run: |
           touch .npmrc
-          echo "//npm.pkg.github.com/:_authToken=$PACKAGE_TOKEN" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" > .npmrc
           echo "@tetsuo:registry=https://npm.pkg.github.com" >> .npmrc
           npm install
+          rm -f .npmrc
 
       - name: Test
         run: npm run test
